@@ -1,0 +1,2 @@
+selenium==2.40.0
+nose_parameterized==0.3.3
