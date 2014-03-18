@@ -3,21 +3,19 @@ ingos-tests
 
 Selenium tests for www.ingos.ru
 
-Requirements
-------------
+# Requirements
 
-- Install Firefox
-- Install requirements
+ - Install Firefox
+ - Install requirements:
 
-.. code-block:: bash
-
+```bash
 $ pip install -r requirements
+```
 
-Usage
------
+# Usage
 
 To start tests:
 
-.. code-block:: bash
-
+```bash
 $ nosetests -v tests.py
+```
