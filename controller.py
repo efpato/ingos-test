@@ -5,7 +5,7 @@ class Controller:
     @staticmethod
     def option(select, text):
         for option in select.find_elements_by_tag_name("option"):
-            if option.text == text:
+            if option.text.encode('utf-8') == text:
                 return option
 
     def __init__(self, driver):

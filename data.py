@@ -34,13 +34,17 @@ def from_csv(csv_name):
     header = next(reader)
     data = []
     for row in reader:
+        if len(row) != len(header):
+            continue
         brand = row[0]
         model = row[1]
         for i in range(2, len(row)):
-            data.append(Car(
-                brand=brand.upper(),
-                model=model.upper(),
-                year=int(header[i]),
-                price=int(row[i].replace(',', ''))
-            ))
+            data.append((
+                Car(
+                    brand=brand.upper(),
+                    model=model.upper(),
+                    year=int(header[i]),
+                    price=int(row[i].replace(',', ''))
+                ),)
+            )
     return data
