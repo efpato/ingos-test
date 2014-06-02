@@ -39,6 +39,7 @@ class KaskoCalcTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.controller.driver.close()
+        time.sleep(1)
 
     @parameterized.expand(from_csv(config["input"]))
     def test(self, car):
@@ -66,6 +67,7 @@ class KaskoCalcTestCase(unittest.TestCase):
         self.controller.last_name.send_keys(u"Фамилия")
         self.controller.first_name.send_keys(u"Имя")
         self.controller.patronymic.send_keys(u"Отчество")
+        self.controller.age.send_keys(30)
         self.controller.phone_code.send_keys(u"999")
         self.controller.phone_number.send_keys(u"9999999")
         self.controller.email.send_keys(u"1@example.com")

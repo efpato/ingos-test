@@ -112,6 +112,10 @@ class Controller:
         return self.driver.find_element_by_id("Cont_First")
 
     @property
+    def age(self):
+        return self.driver.find_element_by_id("Cont_Age")
+
+    @property
     def phone_code(self):
         return self.driver.find_element_by_id("Calc_PhoneCode")
 
