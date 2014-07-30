@@ -16,6 +16,7 @@ from data import from_csv, Bonus
 
 class KaskoCalcTestCase(unittest.TestCase):
     config = json.load(open("config.json"))
+    controller = None
 
     @staticmethod
     def wait(condition_function, timeout=60):
@@ -24,30 +25,29 @@ class KaskoCalcTestCase(unittest.TestCase):
             time.sleep(1)
             attempts += 1
 
-    def __init__(self, *args, **kwargs):
-        super(KaskoCalcTestCase, self).__init__(*args, **kwargs)
-        self.url = self.config["url"]
-        self.controller = None
-
-        with open(self.config["output"], 'w') as fd:
+    @classmethod
+    def setUpClass(cls):
+        cls.controller = Controller(Firefox())
+        cls.controller.driver.maximize_window()
+        cls.controller.driver.get(cls.config["url"])
+        with open(cls.config["output"], 'w') as fd:
             fd.write("Марка,Модель,Год,Цена,Только ущерб (без угона),Угон (без ключей) + ущерб\n")
 
-    def setUp(self):
-        self.controller = Controller(Firefox())
-        self.controller.driver.maximize_window()
-        self.controller.driver.get(self.url)
-
-    def tearDown(self):
-        self.controller.driver.close()
-        time.sleep(1)
+    @classmethod
+    def tearDownClass(cls):
+        cls.controller.driver.close()
 
     @parameterized.expand(from_csv(config["input"]))
     def test(self, car):
+
         self.controller.option(self.controller.car_brand, car.brand).click()
-        self.wait(lambda: len(Select(self.controller.car_model).options) == 1)
+        time.sleep(3)
+        # self.wait(lambda: len(Select(self.controller.car_model).options) == 1)
         self.controller.option(self.controller.car_model, car.model).click()
         self.controller.option(self.controller.car_year, str(car.year)).click()
+        self.controller.car_price.clear()
         self.controller.car_price.send_keys(car.price)
+        self.controller.car_usage_date.clear()
         self.controller.car_usage_date.send_keys("01.01.{0}".format(car.year))
         self.controller.option(self.controller.car_horse_power, "201 и более").click()
         self.controller.new_car.click() if car.year == 2014 else self.controller.old_car.click()
@@ -64,12 +64,19 @@ class KaskoCalcTestCase(unittest.TestCase):
         self.controller.option(self.controller.insurance_period, "1 год").click()
         self.controller.variable_insured_sum.click()
         self.controller.no_franchise.click()
+        self.controller.last_name.clear()
         self.controller.last_name.send_keys(u"Фамилия")
+        self.controller.first_name.clear()
         self.controller.first_name.send_keys(u"Имя")
+        self.controller.patronymic.clear()
         self.controller.patronymic.send_keys(u"Отчество")
+        self.controller.age.clear()
         self.controller.age.send_keys(30)
+        self.controller.phone_code.clear()
         self.controller.phone_code.send_keys(u"999")
+        self.controller.phone_number.clear()
         self.controller.phone_number.send_keys(u"9999999")
+        self.controller.email.clear()
         self.controller.email.send_keys(u"1@example.com")
 
         self.controller.calculate.click()

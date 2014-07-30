@@ -33,7 +33,7 @@ class Controller:
 
     @property
     def car_horse_power(self):
-        return self.driver.find_element_by_xpath("//select[@id='hoursePower']")
+        return self.driver.find_element_by_xpath("//select[@id='hourse_Power']")
 
     @property
     def new_car(self):
